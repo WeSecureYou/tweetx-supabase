@@ -212,7 +212,7 @@ const Tweets = () => {
                         <p className="mr-1 text-gray-500 text-xs mt-[-1px] tracking-wide">
                           {/* • {tweet?.date} */}
                           • {" "}
-                          <ReactTimeAgo date={tweet.created_at} locale="en-US"/>
+                          <ReactTimeAgo date={tweet.created_at} locale="en-US" timeStyle="twitter"/>
                         </p>
                       </div>
                       <div>

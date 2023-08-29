@@ -55,7 +55,7 @@ const TweetPage = () => {
   useEffect(() => {
     if (changeTitle === true) {
       if (!error) {
-        document.title = `${tweetData.author_name} on TweetX: "${tweetData.text}"`
+        document.title = `${tweetData.author_name} (@${tweetData.author_username}) on TweetX: "${tweetData.text}"`
       }
       else {
         document.title = "Error 404 / Post Not Found"
