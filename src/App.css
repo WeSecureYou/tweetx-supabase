@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+/* @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,500;10..48,600;10..48,800&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Chonburi&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
+* {
+  margin: 0;
+  scroll-behavior: smooth;
+}
+body {
+  scroll-behavior: smooth;
+  transition: all 0.4s ease-in-out;
+}
+html {
+  transition: all 0.4s ease-in-out;
+  scroll-behavior: smooth;
+  background-color: #111827;
+}
+.test-css {
+  background-color: #1f2937c8 !important;
+  color: #111827bb;
+}
+.secondary-font {
+  /* font-family: 'Bricolage Grotesque', sans-serif !important; */
+  /* font-family: 'Chonburi', cursive; */
+  font-family: 'Syncopate', sans-serif;
+}
+input {
+  background-color: #1f2937;
+  color: #fff;
+  padding: 6px;
+  border: 1px solid #eee;
+}
+.liked {
+  color: red !important;
+}
+.hh {
+  z-index: 999 !important;
+}
+.blackdrop {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+@keyframes zoom-in {
+  0% {
+    transform: scale(0, 0);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(0, 0);
+  }
+}
+.modalt {
+  animation: zoom-in 0.3s ease-in-out;
+}
+.truncate {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
