@@ -14,6 +14,7 @@ import LoadingScreen from "./LoadingScreen";
 import { BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import VerificationInfoModal from "./VerificationInfoModal";
+import EditProfileModal from "./EditProfileModal";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("tweets");
   const [verificationModal, setVerificationModal] = useState(false)
   const [vType, setVType] = useState();
+  const [editProfileModal, setEditProfileModal] = useState(false);
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUserId(currentUser);
@@ -150,12 +152,16 @@ const Profile = () => {
       setVType("company")
     }
   }
+  const onCloseFunction = () => {
+    setEditProfileModal(false)
+  }
   const coverImage =
     "https://e0.pxfuel.com/wallpapers/141/802/desktop-wallpaper-ultrawide-21-9-collection-3440-updated-regularly-funny-twitter-headers-twitter-header-quotes-twitter-header-aesthetic-ultrawide.jpg";
   if (loading) return <LoadingScreen />
   return (
     <div className="bg-gray-900 min-h-screen">
       {verificationModal && <VerificationInfoModal type={vType} onClose={closeVerificationModal} />}
+      {editProfileModal && <EditProfileModal username={user?.userName} onClose={onCloseFunction} />}
       <button
         onClick={() => navigate("/")}
         className="ml-3 top-[15px] text-md absolute top-0 blackdrop p-1 rounded-full backdrop-blur-md"
@@ -173,34 +179,36 @@ const Profile = () => {
       </div>
       <div className="p-1 border-b border-gray-800">
         <div className="flex flex-col relative items-center space-x-4">
-          <div className="w-16 h-16 left-3 top-[-25px] absolute rounded-full border-4 border-gray-900 overflow-hidden">
-            <img src={user?.photoURL} alt="Avatar" className="h-full w-full" />
+        <div className="w-full h-max flex flex-row justify-between items-center">
+          <div>
+            <img src={user?.photoURL} alt="Avatar" className="w-16 h-16 left-3 top-[-25px] absolute rounded-full border-4 border-gray-900" />
           </div>
-          <div className="mt-10 flex flex-col w-full px-2">
-            <h2 className="text-xl font-bold flex flex-row items-center">{user?.displayName}
+          <div className="py-2 px-4">
+            <button onClick={() => setEditProfileModal(true)} className="py-1 px-2 bg-transparent border-gray-400 border text-gray-400 rounded-full text-xs font-semibold">Edit profile</button>
+          </div>
+          </div>
+          <div className="mt-0 flex flex-col w-full px-2">
+          <h2 className="text-xl font-bold flex flex-row items-center">{user?.displayName}
               {user?.isVerified ? <MdVerified onClick={() => setVerificationModal(true)} className="text-[17px] ml-1 text-blue-500" title="Verified User Of Tweetx" /> : null}
               {user?.isDev ? <MdVerified onClick={() => setVerificationModal(true)} className="text-[17px] ml-1 text-yellow-500" title="Verified Developer Of Tweetx" /> : null}
               {user?.isCompany ? <MdVerified onClick={() => setVerificationModal(true)} className="text-[17px] ml-1 text-yellow-500" title="Official Account Of Tweetx" /> : null}
             </h2>
-            {user?.isDev ? (
-              <p className="text-xs text-gray-500 flex flex-row items-center"> <AiOutlineInfoCircle className="mr-1 text-sm" /> Verified Developer Of TweetX</p>
-            ) : null}
-            {user?.isCompany ? (
-              <p className="text-xs text-gray-500 flex flex-row items-center"> <AiOutlineInfoCircle className="mr-1 text-sm" /> Official Account Of TweetX</p>
-            ) : null}
-            <p className="text-gray-500">
+            <p className="text-gray-500 text-sm font-semibold mt-[-4px]">
               {user?.userName ? (
                 <>@{user?.userName}</>
               ) : (
                 <>@{user?.displayName.replace(" ", "_").toLowerCase()}</>
               )}
             </p>
-            <div className="flex flex-row w-full items-start">
-              <p className="text-sm text-gray-500 pb-2 mt-1">
+            {user?.bio ? (
+              <p className="text-gray-200 text-sm font-semibold mt-2 ml-px">{user?.bio}</p>
+            ): null}
+            <div className="flex flex-row w-full items-start font-semibold mt-1 ml-px">
+              <p className="text-xs text-gray-500 pb-2 mt-1">
                 <span className="text-white">{user?.followers.length}</span>{" "}
                 {user?.followers.length === 1 ? "Follower" : "Followers"}
               </p>
-              <p className="text-sm text-gray-500 pb-2 mt-1 ml-2">
+              <p className="text-xs text-gray-500 pb-2 mt-1 ml-2">
                 <span className="text-white">{user?.following.length}</span>{" "}
                 Following
               </p>

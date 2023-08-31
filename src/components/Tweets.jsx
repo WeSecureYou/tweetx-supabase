@@ -240,7 +240,7 @@ const Tweets = () => {
                     </div>
                     <div
                       className="text-sm mt-[-1px] max-w-[calc(100% - 48px)] flex flex-col cursor-pointer"
-                      onClick={() => navigate(`/post/${tweet.author_username}/${tweet.id}`)}
+                      onClick={() => navigate(`/post/${tweet.id}`)}
                     >
                       <p className="max-w-20 flex-wrap">
                         {parseTweetText(tweet?.text, tweet.id)}

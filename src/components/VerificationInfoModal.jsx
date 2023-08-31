@@ -3,7 +3,7 @@ import { MdVerified } from "react-icons/md"
 
 const VerificationInfoModal = ({ type, onClose }) => {
     return (
-        <div className='w-full py-4 fixed bottom-0 h-[185px] border-t-2 border-gray-800 bg-gray-900 rounded-t-2xl rounded-r-2xl z-50 modalt'>
+        <div className='w-full py-4 fixed bottom-0 h-[185px] border-t-2 border-gray-800 bg-gray-900 rounded-t-2xl rounded-r-2xl z-50 slide-in'>
             {/* <div className='w-full flex flex-row justify-center items-center mb-4'>
                 <div className='w-[40px] h-[5px] bg-gray-700 rounded-full'></div>
             </div> */}

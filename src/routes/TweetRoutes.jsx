@@ -72,7 +72,7 @@ const TweetRoutes = () => {
         {window.innerWidth <= "426" ? (
           <>
             <Route path="*" element={<Four04 />} />
-            <Route path="/post/:username/:id" element={<TweetPage />} />
+            <Route path="/post/:id" element={<TweetPage />} />
             {user ? (
               <>
                 <Route path="/" element={<ExploreTweets />} />
