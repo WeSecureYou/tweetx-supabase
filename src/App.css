@@ -28,7 +28,6 @@ input {
   background-color: #1f2937;
   color: #fff;
   padding: 6px;
-  border: 1px solid #eee;
 }
 .liked {
   color: red !important;
