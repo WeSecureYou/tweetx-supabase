@@ -26,7 +26,7 @@ const ToolModal = ({ av, name, usn, date, text, img, onClose, vType, id, postId,
     }
   }, [user])
   const copyToClipboard = () => {
-    const currentUrl = `https://tweetx-kappa.vercel.app/post/${postId}`;
+    const currentUrl = `${window.location.protocol}://${window.location.host}/post/${postId}`;
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => alert("URL copied to clipboard!"))

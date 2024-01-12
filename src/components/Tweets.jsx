@@ -21,6 +21,7 @@ import Header from "../components/Header";
 import DLconfirmation from "./DLconfirmation";
 import { supabase } from "../supabaseClient";
 import { logout } from "../Config/DatabaseReworked";
+import FailToLoad from "./FailToLoad";
 const Tweets = () => {
   const tweetRef = collection(db, "tweets");
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Tweets = () => {
   const [currentUserId, setCurrentUserId] = useState();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [showTweetModal, setShowTweetModal] = useState(false);
   const [currentTweetModalData, setCurrentTweetModalData] = useState(null);
   useEffect(() => {
@@ -61,6 +63,7 @@ const Tweets = () => {
       }
       setLoading(false);
     } catch (error) {
+      setError(true)
       console.log(error);
     }
   }
@@ -123,6 +126,7 @@ const Tweets = () => {
   };
 
   if (loading) return <LoadingScreen />;
+  if (error) return <FailToLoad />
   return (
     <>
       <Header />

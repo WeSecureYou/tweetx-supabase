@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import HeaderAlt from "./HeaderAlt";
-const EditProfileModal = ({ username, onClose }) => {
-  const [userData, setUserData] = useState();
+const EditProfileRedo = ({ username, onClose }) => {
+  const [userData, setUserData] = useState({});
   const [updatedFields, setUpdatedFields] = useState({});
   const [message, setMessage] = useState("");
   const [type, setType] = useState("null");
+
   useEffect(() => {
     fetchUserProfile(username);
-  }, []);
+  }, [username]);
+
   const fetchUserProfile = async (username) => {
     try {
       const { data, error } = await supabase
@@ -19,42 +21,21 @@ const EditProfileModal = ({ username, onClose }) => {
       if (error) throw error;
       if (data !== null) {
         setUserData(data);
+        // setUpdatedFields(data); // Initialize updatedFields with user data
+        console.log(userData)
+        console.log(updatedFields)
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleFieldChange = (fieldName, value) => {
+    console.log(`Received input for the field ${fieldName} with the following value: ${value}`)
     setUpdatedFields((prevFields) => ({
       ...prevFields,
       [fieldName]: value,
     }));
-  };
-
-  const updateUserProfile = async () => {
-    try {
-      if (updatedFields.userName !== "") {
-        checkUsernameAvailability(updatedFields.userName)
-      }
-      if (type === "good") {
-        const { error } = await supabase
-          .from("profiles")
-          .update({
-            id: username,
-            ...updatedFields,
-            // TODO :ADD OTHER FIELDS (THAT MIGHT FIX THE ID NOT GETTING UPDATED BUG)
-          })
-          .eq("id", username);
-        if (error) throw error;
-        // window.location.reload();
-        console.log("updated profile");
-      }
-      else {
-        console.log("usn taken")
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const checkUsernameAvailability = async (query) => {
@@ -80,6 +61,29 @@ const EditProfileModal = ({ username, onClose }) => {
       console.log(error);
     }
   }
+
+  const updateUserProfile = async () => {
+    try {
+      console.log("updating records with the following value:", updatedFields)
+      await supabase
+        .from("profiles")
+        .update(updatedFields)
+        .eq("id", username);
+      fetchUserProfile(username); // Fetch updated data after successful update
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
+  // const handleUserNameChange = (e) => {
+  //   handleFieldChange("userName", e.target.value)
+  //   if (e.target.value !== ""){
+  //     checkUsernameAvailability(e.target.value)
+  //   }
+  //   else {
+  //     setMessage(false)
+  //   }
+  // }
   return (
     <div className="fixed h-screen top-0 z-50 w-full flex flex-col bg-gray-900 w-full overflow-hidden">
       <HeaderAlt page={"Edit Profile"} />
@@ -97,7 +101,7 @@ const EditProfileModal = ({ username, onClose }) => {
           <div className="w-full h-max flex flex-row justify-between items-center">
             {userData?.photoURL ?
               <img
-                src={userData.photoURL}
+                src={userData?.photoURL}
                 alt="Avatar"
                 className="w-24 h-24 left-3 top-[-45px] absolute rounded-full border-4 border-gray-900"
               /> :
@@ -113,8 +117,8 @@ const EditProfileModal = ({ username, onClose }) => {
 
       <div className="px-2 py-2 flex flex-col mt-14">
         <div className="flex px-2 flex-col my-2 w-full">
-          <label htmlFor="banner" className="font-bold text-gray-300 w-max">
-            Banner
+          <label htmlFor="banner" className="font-bold flex flex-col text-gray-300 w-max max-w-full">
+            Banner <span className="text-xs font-light text-gray-400 overflow-hidden max-w-1/2">(current - {userData.bannerURL})</span>
           </label>
           <input
             className="py-1 px-2 border-gray-800 border rounded-md text-sm bg-transparent text-blue-400 w-full outline-none"
@@ -122,48 +126,50 @@ const EditProfileModal = ({ username, onClose }) => {
             name="banner"
             placeholder="Enter your banner URL"
             value={
-              updatedFields.bannerURL || ""
+              updatedFields.bannerURL
             }
             onChange={(e) => handleFieldChange("bannerURL", e.target.value)}
           />
         </div>
         <div className="flex px-2 flex-col my-2 w-full">
-          <label htmlFor="banner" className="font-bold text-gray-300 w-max">
-            Avatar</label>
+            <label htmlFor="banner" className="font-bold flex flex-col text-gray-300 w-max max-w-full">
+            Avatar <span className="text-xs font-light text-gray-400 overflow-hidden max-w-1/2">(current - {userData.photoURL})</span>
+          </label>
           <input
             type="text"
             name="Avatar"
             placeholder="Enter your avatar URL"
             className="py-1 px-2 border-gray-800 border rounded-md text-sm bg-transparent text-blue-400 w-full outline-none"
-            value={updatedFields.photoURL || ""}
+            value={updatedFields.photoURL}
             onChange={(e) => handleFieldChange("photoURL", e.target.value)}
           />
         </div>
         <div className="flex px-2 flex-col my-2 w-full">
-          <label htmlFor="banner" className="font-bold text-gray-300 w-max-c">
-            Display Name</label>
+        <label htmlFor="banner" className="font-bold flex flex-col text-gray-300 w-max max-w-full">
+            Display Name <span className="text-xs font-light text-gray-400 overflow-hidden max-w-1/2">(current - {userData.displayName})</span>
+          </label>
           <input
             type="text"
             name="displayName"
             placeholder="Enter your Name"
             className="py-1 px-2 border-gray-800 border rounded-md text-sm bg-transparent text-blue-400 w-full outline-none"
-            value={updatedFields.displayName || ""}
+            value={updatedFields.displayName}
             onChange={(e) => handleFieldChange("displayName", e.target.value)}
           />
         </div>
         <div className="flex px-2 flex-col my-2 w-full">
-          <label htmlFor="banner" className="font-bold text-gray-300 w-max-c">
-            Username</label>
+            <label htmlFor="banner" className="font-bold flex flex-col text-gray-300 w-max max-w-full">
+            Username <span className="text-xs font-light text-gray-400 overflow-hidden max-w-1/2">(current - {userData.id})</span>
+          </label>
           <input
             type="text"
             name="displayName"
             placeholder="Enter your Username"
             className="py-1 px-2 border-gray-800 border rounded-md text-sm bg-transparent text-blue-400 w-full outline-none"
-            value={updatedFields.userName || ""}
-            onChange={(e) => handleFieldChange("userName", e.target.value)}
-            onMouseOut={() => checkUsernameAvailability(updatedFields.userName)}
+            value={updatedFields.userName}
+            onChange={(e) => handleFieldChange("id", e.target.value)}
           />
-          <p className={`${type === "good" ? "text-green-400" : null} ${type === "bad" ? "text-red-400" : null} font-semibold text-xs ml-1 mt-1`}>
+          <p className={`${type === "good" ? "text-green-400" : null} ${type === "bad" ? "text-red-400" : null} overflow-hidden max-w-max font-md text-xs ml-1 mt-1`}>
             {message !== "" ? (
               message
             ) : null}</p>
@@ -181,4 +187,4 @@ const EditProfileModal = ({ username, onClose }) => {
   );
 };
 
-export default EditProfileModal;
+export default EditProfileRedo;

@@ -19,6 +19,7 @@ const QuickLinks = () => {
           </div>
           <div className="flex flex-row">
         <button className='w-max bg-blue-700 py-1 px-3 m-1 rounded-md' onClick={() => navigate("/tools/admin/data-transfer")}>Data Transfer</button>
+        <button className='w-max bg-blue-700 py-1 px-3 m-1 rounded-md' onClick={() => window.open("https://supabase.com/dashboard/project/odxilmnihlszaqnanlby/editor")}>Database</button>
           </div>
         </div>
     </div>

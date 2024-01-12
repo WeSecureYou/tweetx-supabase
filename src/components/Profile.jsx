@@ -15,6 +15,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import VerificationInfoModal from "./VerificationInfoModal";
 import EditProfileModal from "./EditProfileModal";
+import EditProfileRedo from "./EditProfileRedo";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -157,10 +158,10 @@ const Profile = () => {
     <div className="bg-gray-900 min-h-screen">
       {verificationModal && (
         <VerificationInfoModal type={vType} onClose={closeVerificationModal} />
-      )}
-      {editProfileModal && (
-        <EditProfileModal username={user?.userName} onClose={onCloseFunction} />
-      )}
+        )}
+        {editProfileModal && (
+          <EditProfileRedo username={user.userName} onClose={onCloseFunction} />
+        )}
       <div>
         <button
           onClick={() => navigate("/")}
